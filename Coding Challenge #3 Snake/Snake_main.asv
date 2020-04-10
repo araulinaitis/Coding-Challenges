@@ -1,0 +1,46 @@
+clear all;close all;clc
+a='0';
+S.fh = figure('keypressfcn',@f_capturekeystroke,...
+    'Color', 'k');
+axis equal
+% game = figure('Color', 'k',...
+%     'Units', 'pixels');
+
+% guidata(S.fh,S)
+
+% Create game board image array
+global gBoard
+gBoard = zeros(100, 100, 3);
+
+% create snake object
+xTarget = randi([1, 100]);
+yTarget = randi([1, 100]);
+player = Snake(xTarget, yTarget);
+
+% Make initial target
+xTarget2 = randi([1, 100]);
+yTarget2 = randi([1, 100]);
+while xTarget2 == xTarget && yTar
+if xTarget == 
+
+gBoard(xTarget2, yTarget2, 1) = 1;
+
+while 1
+    player.draw();
+    imshow(gBoard);
+    drawnow
+    
+    pause(0.1)
+end
+
+
+
+
+
+
+
+function  f_capturekeystroke(H,E)
+% capturing and logging keystrokes
+S2 = guidata(H);
+assignin('base','a',E.Key)    % passing 1 keystroke to workspace variable
+end
