@@ -34,9 +34,16 @@ end
 
 gBoard(xTarget2, yTarget2, 1) = 1;
 
+frameRate = 7;
+
+writerObj = VideoWriter('Snake1.avi');
+writerObj.FrameRate = frameRate;
+
+open(writerObj)
+
 
 while 1
-    
+    startLoop = now;
     gBoard = zeros(boardSize, boardSize, 3);
     gBoard(1, :, :) = 1;
     gBoard(end, :, :) = 1;
@@ -80,13 +87,20 @@ while 1
     player.draw();
     imshow(gBoard, 'InitialMagnification', 'fit');
     drawnow
+        writeVideo(writerObj, getframe(gcf))
     
-    %     tStart = tic;
-    %     while toc(tStart) < .1
-    %     end
-    pause(0.1)
+
+pause((1/frameRate) - ((now - startLoop) * 10^5))
+% end
+
 end
 
+for i = 1:25
+    imshow(gBoard, 'InitialMagnification', 'fit');
+    drawnow
+    writeVideo(writerObj, getframe(gcf))
+end
+close(writerObj);
 
 function endGame()
 txt = uicontrol('Style', 'text',...

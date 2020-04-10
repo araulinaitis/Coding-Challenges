@@ -61,7 +61,7 @@ classdef Snake < handle
                     end
                     assignin('base','keystroke','0')
                 otherwise
-                    keyboard
+%                     keyboard
             end
             
         end
