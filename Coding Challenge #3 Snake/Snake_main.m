@@ -6,6 +6,7 @@ keystroke='0';
 S.fh = figure('units','normalized','outerposition',[0 0 1 1],...
     'keypressfcn',@f_capturekeystroke,...
     'Color', 'k');
+
 axis equal
 % game = figure('Color', 'k',...
 %     'Units', 'pixels');
@@ -13,7 +14,8 @@ axis equal
 % guidata(S.fh,S)
 
 % Create game board image array
-boardSize = 50;
+boardSize = 27;
+
 global gBoard
 gBoard = zeros(boardSize, boardSize, 3);
 
@@ -24,7 +26,7 @@ player = Snake(xTarget, yTarget);
 
 % Make initial target
 xTarget2 = randi([2, boardSize - 1]);
-yTarget2 = randi([2, boardSize]);
+yTarget2 = randi([2, boardSize - 1]);
 while xTarget2 == xTarget && yTarget2 == yTarget
     xTarget2 = randi([2, boardSize - 1]);
     yTarget2 = randi([2, boardSize - 1]);
@@ -51,17 +53,26 @@ while 1
     % check collisions
     playerPos = player.getPos;
     if player.checkTailCollision
+        endGame();
         break
-    elseif playerPos(1) < 1 || playerPos(1) > boardSize - 1 || playerPos(2) < 1 || playerPos(2) > boardSize - 1
+    elseif playerPos(1) < 2 || playerPos(1) >= boardSize || playerPos(2) < 2 || playerPos(2) >= boardSize
+        endGame();
         break
     elseif playerPos(1) == xTarget2 && playerPos(2) == yTarget2
         % grow snake
         player.grow();
         
+        % check win condition
+        if player.getLength == ((boardSize - 2) * (boardSize - 2))
+            winGame();
+            break
+        end
+        
         % make new target
-        while xTarget2 == playerPos(1) && yTarget2 == playerPos(2)
+        while xTarget2 == playerPos(1) && yTarget2 == playerPos(2) || player.touchesTail(xTarget2, yTarget2)
             xTarget2 = randi([2, boardSize - 1]);
             yTarget2 = randi([2, boardSize - 1]);
+            gBoard(xTarget2, yTarget2, 1) = 1;
         end
         
     end
@@ -70,14 +81,30 @@ while 1
     imshow(gBoard, 'InitialMagnification', 'fit');
     drawnow
     
-%     tStart = tic;
-%     while toc(tStart) < .1
-%     end
+    %     tStart = tic;
+    %     while toc(tStart) < .1
+    %     end
     pause(0.1)
 end
 
 
+function endGame()
+txt = uicontrol('Style', 'text',...
+    'String', 'YOU LOSE',...
+    'Position', [675 500 600 110],...
+    'BackgroundCOlor', 'k',...
+    'ForegroundColor', 'g',...
+    'FontSize', 75);
+end
 
+function winGame()
+txt = uicontrol('Style', 'text',...
+    'String', 'YOU WIN',...
+    'Position', [675 500 600 110],...
+    'BackgroundCOlor', 'k',...
+    'ForegroundColor', 'g',...
+    'FontSize', 75);
+end
 
 
 function  f_capturekeystroke(H,E)
