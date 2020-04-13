@@ -14,7 +14,7 @@ axis equal
 % guidata(S.fh,S)
 
 % Create game board image array
-boardSize = 27;
+boardSize = 4;
 
 global gBoard
 gBoard = zeros(boardSize, boardSize, 3);
@@ -34,9 +34,9 @@ end
 
 gBoard(xTarget2, yTarget2, 1) = 1;
 
-frameRate = 7;
+frameRate = 3;
 
-writerObj = VideoWriter('Snake1.avi');
+writerObj = VideoWriter('Snake3.avi');
 writerObj.FrameRate = frameRate;
 
 open(writerObj)
@@ -94,7 +94,7 @@ pause((1/frameRate) - ((now - startLoop) * 10^5))
 % end
 
 end
-
+player.draw();
 for i = 1:25
     imshow(gBoard, 'InitialMagnification', 'fit');
     drawnow

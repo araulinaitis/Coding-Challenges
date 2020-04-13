@@ -1,0 +1,37 @@
+classdef Drop < handle
+    properties
+        x
+        y
+        z % will determine size and speeds from z
+        size
+        speed
+    end
+    
+    properties(Constant)
+       color = [138, 43, 226]; 
+    end
+    
+    methods
+        function obj = Drop(x, y, z)
+            obj.x = x;
+            obj.y = y;
+            obj.z = z;
+            
+            obj.size = [10, 1] * map(z, 0, 10, 10, 1);
+            obj.speed = map(z, 0, 10, 10, 1);
+            
+        end
+        
+        function move(obj)
+            obj.x = obj.x + obj.speed;
+        end
+        
+        function draw(obj)
+           global world
+           
+           world(x:x + obj.size(1)), y:(y + obj.size(2)), 1)
+           
+        end
+        
+    end
+end
