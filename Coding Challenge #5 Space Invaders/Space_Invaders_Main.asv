@@ -1,0 +1,66 @@
+clear all; clc; close all;
+
+
+keystroke='0';
+S.fh = figure('units','normalized','outerposition',[0 0 1 1],...
+    'keypressfcn',@f_capturekeystroke,...
+    'Color', 'k');
+
+
+frameRate = 3;
+
+% writerObj = VideoWriter('SpaceInvaders.avi');
+% writerObj.FrameRate = frameRate;
+
+% open(writerObj);
+
+global world; global worldHeight; global worldWidth;
+
+worldHeight = 200;
+worldWidth = 500;
+world = zeros(worldHeight, worldWidth, 3);
+baseWorld = world;
+
+% Create player
+player = Player(round(worldWidth / 2));
+
+while 1
+    % reset world image
+    world = baseWorld;
+    
+    player.move(keysroke);
+    player.da
+    
+%     writeVideo(writerObj, getframe(gcf))
+
+end
+
+% close(writerObj);
+
+
+
+
+function endGame()
+uicontrol('Style', 'text',...
+    'String', 'YOU LOSE',...
+    'Position', [675 500 600 110],...
+    'BackgroundCOlor', 'k',...
+    'ForegroundColor', 'g',...
+    'FontSize', 75);
+end
+
+function winGame()
+uicontrol('Style', 'text',...
+    'String', 'YOU WIN',...
+    'Position', [675 500 600 110],...
+    'BackgroundCOlor', 'k',...
+    'ForegroundColor', 'g',...
+    'FontSize', 75);
+end
+
+
+function  f_capturekeystroke(H,E)
+% capturing and logging keystrokes
+S2 = guidata(H);
+assignin('base','keystroke',E.Key)    % passing 1 keystroke to workspace variable
+end
