@@ -9,7 +9,6 @@ classdef Player < handle
         y
         bullets
         numBullets = uint16(0);
-        vel = uint16(4);
     end
     
     methods
@@ -22,17 +21,12 @@ classdef Player < handle
         end
         
         function move(obj, keystroke)
-            global worldWidth
             switch keystroke
                 case ''
                 case 'leftarrow'
-                    if obj.x - obj.width / 2 - obj.vel > 0
-                        obj.x = obj.x - obj.vel;
-                    end
+                    obj.x = obj.x - 1;
                 case 'rightarrow'
-                    if obj.x + obj.width / 2 + obj.vel < worldWidth
-                        obj.x = obj.x + obj.vel;
-                    end
+                    obj.x = obj.x + 1;
             end
             
             for i = 1:obj.numBullets
@@ -65,21 +59,17 @@ classdef Player < handle
                 while j <= numInvaders
                     
                     if invaders(j).checkBullet(thisBullet)
-                        if invaders(j).getHealth
-                            invaders(j).hit;
-                        else
-                            invaders(j) = [];
-                            numInvaders = numInvaders - 1;
-                        end
+                        invaders(j) = [];
+                        numInvaders = numInvaders - 1;
                         obj.bullets(i) = [];
-                        obj.numBullets = obj.numBullets - 1;
+                        obj.numBullets =- 
                         break
                     else
                         j = j + 1;
                     end
+                    
+                    
                 end
-                
-                i = i + 1;
             end
             
         end
