@@ -6,15 +6,14 @@ S.fh = figure('units','normalized',...
     'KeyReleaseFcn', @f_releaseKey,...
     'Color', 'k');
 
-% axis manual
+axis manual
 
-
-frameRate = 15;
-
-writerObj = VideoWriter('SpaceInvaders2.avi');
-writerObj.FrameRate = frameRate;
-
-open(writerObj);
+frameRate = 30;
+% 
+% writerObj = VideoWriter('SpaceInvaders2.avi');
+% writerObj.FrameRate = frameRate;
+% 
+% open(writerObj);
 
 global world; global worldHeight; global worldWidth;
 
@@ -22,8 +21,6 @@ worldHeight = 200;
 worldWidth = 500;
 world = zeros(worldHeight, worldWidth, 3);
 baseWorld = world;
-
-% axis([0, worldWidth, 0, worldHeight]);
 
 % Create player
 player = Player(round(worldWidth / 2));
@@ -35,7 +32,7 @@ invaders = {};
 numInvaders = 5;
 for i = 1:numInvaders
     thisX = round((worldWidth / 4) + ((i -1) * 0.5 * worldWidth / 5) + (0.25 * worldWidth / 5));
-    invaders = [invaders; Invader(thisX, 150, 3)];
+    invaders = [invaders; Invader(thisX, 10, 3)];
 end
 
 while 1
@@ -83,27 +80,31 @@ while 1
         invaders(i).draw
     end
     
-    imshow(world)
+    image(world)
+axis off
+        drawnow
     
-        writeVideo(writerObj, getframe(gcf))
-    pause((1/frameRate) - ((now - startLoop) * 10^5))
+%         writeVideo(writerObj, getframe(gcf))
+%     pause((1/frameRate) - ((now - startLoop) * 10^5))
+while (now - startLoop) * 10^5 < (1 / frameRate)
+end
     
-    %     uicontrol('Style', 'text',...
-    %         'String', num2str(1/((now - startLoop) * 10^5)),...
-    %         'Position', [20 20 100 110],...
-    %         'BackgroundCOlor', 'k',...
-    %         'ForegroundColor', 'g',...
-    %         'FontSize', 20);
-    %     drawnow
+%         uicontrol('Style', 'text',...
+%             'String', num2str(1/((now - startLoop) * 10^5)),...
+%             'Position', [20 20 100 110],...
+%             'BackgroundCOlor', 'k',...
+%             'ForegroundColor', 'g',...
+%             'FontSize', 20);
     
+1/((now - startLoop) * 10^5)
 end
 
-for i = 1:25
+% for i = 1:25
 %     imshow(world);
 %     drawnow
-    writeVideo(writerObj, getframe(gcf))
-end
-close(writerObj);
+%     writeVideo(writerObj, getframe(gcf))
+% end
+% close(writerObj);
 
 
 
