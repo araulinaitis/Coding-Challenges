@@ -1,0 +1,21 @@
+clear all; clc; close all;
+
+frameRate = 60;
+
+% writerObj = VideoWriter('Mitosis.avi');
+% writerObj.FrameRate = frameRate;
+% 
+% open(writerObj);
+
+    
+while 1
+    
+    
+%     writeVideo(writerObj, getframe(gcf))
+    
+    while (now - startLoop) * 10^5 < (1 / frameRate)
+    end
+    
+end
+
+% close(writerObj)
