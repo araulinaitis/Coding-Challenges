@@ -1,0 +1,92 @@
+classdef MazeCell < handle
+    properties
+        x
+        y
+        north
+        south
+        east
+        west
+        nWall
+        sWall
+        eWall
+        wWall
+        visited = 0;
+        
+    end
+    
+    methods
+        function obj = MazeCell(x, y)
+            if nargin > 0
+                obj.x = x;
+                obj.y = y;
+            end
+        end
+        
+        function makeWalls(obj, cells)
+            
+            if isempty(obj.nWall)
+                if ~isempty(obj.north)
+                    obj.nWall = Wall(obj, cells(obj.y - 1, obj.x));
+                    cells(obj.y - 1 , obj.x).sWall = obj.nWall;
+                else
+                    obj.nWall = Wall(obj, []);
+                end
+            end
+            
+            if isempty(obj.sWall)
+                if ~isempty(obj.south)
+                    obj.sWall = Wall(obj, cells(obj.y + 1, obj.x));
+                    cells(obj.y + 1 , obj.x).nWall = obj.sWall;
+                else
+                    obj.sWall = Wall(obj, []);
+                end
+            end
+            
+            if isempty(obj.eWall)
+                if ~isempty(obj.east)
+                    obj.eWall = Wall(obj, cells(obj.y, obj.x + 1));
+                    cells(obj.y , obj.x + 1).wWall = obj.eWall;
+                else
+                    obj.eWall = Wall(obj, []);
+                end
+            end
+            
+            if isempty(obj.wWall)
+                if ~isempty(obj.west)
+                    obj.wWall = Wall(obj, cells(obj.y - 1, obj.x - 1));
+                    cells(obj.y, obj.x - 1).eWall = obj.wWall;
+                else
+                    obj.wWall = Wall(obj, []);
+                end
+            end
+            
+        end
+        
+        function assignNeighbors(obj, cells, worldWidth, worldHeight)
+            
+            if obj.y == 1
+                obj.north = [];
+                obj.south = cells(obj.y + 1, obj.x);
+            elseif obj.y == worldHeight
+                obj.south = [];
+                obj.north = cells(obj.y - 1, obj.x);
+            else
+                obj.north = cells(obj.y - 1, obj.x);
+                obj.south = cells(obj.y + 1, obj.x);
+            end
+            
+            if obj.x == 1
+                obj.west = [];
+                obj.east = cells(obj.y, obj.x + 1);
+            elseif obj.x == worldWidth
+                obj.east = [];
+                obj.west = cells(obj.y, obj.x - 1);
+            else
+                obj.west = cells(obj.y, obj.x - 1);
+                obj.east = cells(obj.y, obj.x + 1);
+            end
+            
+        end
+        
+    end
+end
