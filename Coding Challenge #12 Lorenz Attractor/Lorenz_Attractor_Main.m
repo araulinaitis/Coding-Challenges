@@ -3,6 +3,11 @@ clear all; clc; close all;
 figure('WindowState', 'maximized', 'color', 'k');
 axis equal
 axis off
+ax = gca;
+% set(ax, 'Projection', 'perspective');
+set(ax,'CameraViewAngleMode','Manual')
+axBound = 60;
+axis([-axBound, axBound, -axBound, axBound, 0, axBound])
 hold on
 
 worldWidth = 25;
@@ -61,7 +66,7 @@ for i = 1:(frameRate * 120)
     b = blue(t);
     
     % make line between last point and this point
-    line([lastX, x], [lastY, y], [lastZ, z], 'color', [r, g, b])
+    line(ax, [lastX, x], [lastY, y], [lastZ, z], 'color', [r, g, b])
     
     drawnow
     writeVideo(writerObj, getframe(gcf))
