@@ -11,8 +11,13 @@ classdef MazeCell < handle
         eWall
         wWall
         visited = 0;
-        cellSize = 10;
+        cellSize
         order
+        prev
+        next
+    end
+    properties(Access = private)
+        p
     end
     
     methods
@@ -20,9 +25,25 @@ classdef MazeCell < handle
             if nargin > 0
                 obj.x = x;
                 obj.y = y;
+                
+                
+                obj.order = randperm(4);
+                
+                thisSize = 10;
+                obj.cellSize = thisSize;
+                
+                x1 = thisSize * (x - 1);
+                y1 = thisSize * (y - 1);
+                x2 = thisSize * x;
+                y2 = y1;
+                x3 = x2;
+                y3 = thisSize * y;
+                x4 = x1;
+                y4 = y3;
+                
+                obj.p = patch([x1; x2; x3; x4], [y1; y2; y3; y4], 'w', 'EdgeColor', 'none');
             end
             
-            obj.order = randperm(4);
         end
         
         function build(obj)
@@ -139,6 +160,14 @@ classdef MazeCell < handle
                 obj.east = cells(obj.y, obj.x + 1);
             end
             
+        end
+        
+        function highlight(obj)
+            set(obj.p, 'FaceColor', [.7, 0, 0]);
+        end
+        
+        function dehighlight(obj)
+            set(obj.p, 'FaceColor', [0.95, .75, .75]);
         end
         
     end

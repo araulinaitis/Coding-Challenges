@@ -44,8 +44,8 @@ classdef Wall < handle
         
         function deleteWall(obj)
             delete(obj.l);
-            drawnow
-            evalin('base', 'writeVideo(writerObj, getframe(gcf))')
+%             drawnow
+%             evalin('base', 'writeVideo(writerObj, getframe(gcf))', 'lineWidth', 2)
         end
         
     end
