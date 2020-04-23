@@ -33,7 +33,6 @@ classdef Turtle < handle
                     lastPoint = obj.point;
                     obj.point = obj.point + obj.dir;
                     line([lastPoint(1), obj.point(1)], [lastPoint(2), obj.point(2)], 'color', 'k')
-                    evalin('base', 'writeVideo(writerObj, getframe(gcf))');
                 case '+'
                     obj.dir = (obj.rightTurn * obj.dir')';
                 case '-'
@@ -46,6 +45,9 @@ classdef Turtle < handle
                     obj.savedLoc(end, :) = [];
                     obj.dir = obj.savedDir(end, :);
                     obj.savedDir(end, :) = [];
+                    if size(obj.savedLoc, 1) <= 1
+                        evalin('base', 'writeVideo(writerObj, getframe(gcf))');
+                    end
             end
             obj.curLoc = obj.curLoc + 1;
         end

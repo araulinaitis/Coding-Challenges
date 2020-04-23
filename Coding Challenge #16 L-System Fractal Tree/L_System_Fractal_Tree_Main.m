@@ -48,7 +48,7 @@ for idx = 1:length(tree)
 %     drawnow
 %     writeVideo(writerObj, getframe(gcf))
     
-    %     disp(idx / (frameRate * recordLength));
+     disp(idx / (length(tree)));
     
 %     while (now - startLoop) * 10^5 < (1 / frameRate)
 %     end
