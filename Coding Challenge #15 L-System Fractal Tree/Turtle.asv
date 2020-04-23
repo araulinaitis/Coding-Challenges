@@ -1,0 +1,37 @@
+classdef Turtle
+    properties
+        point
+        dir
+        curLoc
+        savedLoc
+        string
+    end
+    
+    methods
+        function obj = Turtle(x, y, string)
+            obj.point = [x, y];
+            obj.string = string;
+            obj.curLoc = 1;
+            obj.dir = [0, 1];
+        end
+        
+        function step(obj)
+            switch obj.string(obj.curLoc)
+                case 'F'
+                    obj.point = obj.point + obj.dir;
+                case '+'
+                    obj.dir = ([0 1; -1 0] * obj.dir')'
+                case '-'
+                    obj.dir = ([0 -1; 1 0] * obj.dir')'
+                    
+                case '['
+                    
+                case ']'
+                    
+            end
+        end
+        
+    end
+end
+
+        
