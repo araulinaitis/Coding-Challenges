@@ -1,0 +1,63 @@
+clear all; clc; close all;
+% http://algorithmicbotany.org/papers/colonization.egwnp2007.large.pdf
+
+figure('WindowState', 'maximized')
+worldWidth = 400;
+worldHeight = 400;
+% axis([0, worldWidth, 0, worldHeight]);
+axis equal
+axis off
+hold on
+% axis manual
+
+frameRate = 60;
+writerObj = VideoWriter('Space Colonization Fractal Tree.avi');
+writerObj.FrameRate = frameRate;
+% open(writerObj);
+
+% Make attractors
+
+attractorRangeRadius = 20;
+attractorRangeCenter = 30;
+numAttractors = 36;
+
+attractorX = -attractorRangeRadius + (2 * attractorRangeRadius) * rand(round(sqrt(numAttractors)));
+attractorY = (attractorRangeCenter - attractorRangeRadius) + (2 * attractorRangeRadius) * rand(round(sqrt(numAttractors)));
+
+for i = 1:numAttractors
+
+
+% make first tree node
+treeArr = TreeNode(0, 0);
+
+nextPing = 0.05;
+while 1
+    startLoop = now;
+    
+    % reset attractors for each tree node
+    for i = 1:length(treeArr)
+        treeArr(i).clearAttractors;
+    end
+    
+    % Find closest tree node to each attractor
+    
+    
+%     drawnow
+%     writeVideo(writerObj, getframe(gcf)
+    
+% if (idx / length(tree)) >= nextPing
+%      disp(idx / (length(tree)));
+%      nextPing = nextPing + 0.05;
+% end
+    
+%     while (now - startLoop) * 10^5 < (1 / frameRate)
+%     end
+end
+disp(1)
+drawnow
+% thisF = getframe(gcf);
+% for i = 1:(frameRate * 5)
+%     writeVideo(writerObj, thisF)
+% end
+% 
+% close(writerObj)

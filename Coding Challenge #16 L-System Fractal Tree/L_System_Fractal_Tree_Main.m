@@ -9,7 +9,7 @@ axis off
 hold on
 % axis manual
 
-frameRate = 240;
+frameRate = 60;
 writerObj = VideoWriter('L-System Fractal Tree.avi');
 writerObj.FrameRate = frameRate;
 open(writerObj);
@@ -18,27 +18,30 @@ numSplits = 5;
 
 % Make L-System String
 tree = 'F';
-nextTree = '';
 for idx = 1:numSplits
-    i = 1;
-    while i <= length(tree)
-        %     for i = 1:length(tree)
+    
+nextTree = '';
+%     i = 1;
+%     while i <= length(tree)
+            for i = 1:length(tree)
         switch tree(i)
             case 'F'
-                %                 nextTree = [nextTree, 'FF+[+F-F-F]-[-F+F+F]'];
-                tree = [tree(1:(i - 1)), 'FF+[+F-F-F]-[-F+F+F]', tree((i + 1):end)];
-                i = i + 20;
+                                nextTree = [nextTree, 'FF+[+F-F-F]-[-F+F+F]'];
+%                 tree = [tree(1:(i - 1)), 'FF+[+F-F-F]-[-F+F+F]', tree((i + 1):end)];
+%                 i = i + 20;
             otherwise
-                i = i + 1;
+                nextTree = [nextTree, tree(i)];
+%                 i = i + 1;
         end
     end
-    %     tree = nextTree;
+        tree = nextTree;
 end
 
 % set up turtle
 
 turtle = Turtle(worldWidth / 2, 0, tree);
 
+nextPing = 0.05;
 % while 1
 for idx = 1:length(tree)
 %     startLoop = now;
@@ -48,14 +51,19 @@ for idx = 1:length(tree)
 %     drawnow
 %     writeVideo(writerObj, getframe(gcf))
     
+if (idx / length(tree)) >= nextPing
      disp(idx / (length(tree)));
+     nextPing = nextPing + 0.05;
+end
     
 %     while (now - startLoop) * 10^5 < (1 / frameRate)
 %     end
 end
-
+disp(1)
+drawnow
+thisF = getframe(gcf);
 for i = 1:(frameRate * 5)
-    writeVideo(writerObj, getframe(gcf))
+    writeVideo(writerObj, thisF)
 end
 
 close(writerObj)

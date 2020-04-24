@@ -1,0 +1,14 @@
+classdef Attractor < handle
+    properties
+        x
+        y
+        roi
+        killDist
+    end
+    
+    methods
+        function obj = Attractor()
+        end
+        
+    end
+end
