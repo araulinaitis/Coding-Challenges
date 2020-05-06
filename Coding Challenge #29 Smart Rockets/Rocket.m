@@ -82,6 +82,9 @@ classdef Rocket < handle
                 global rx2; global rw2; global ry2; global rh2
                 global worldWidth; global worldHeight
                 
+                obj.applyForce(obj.dna.genes{obj.count});
+                obj.count = obj.count + 1;
+                
                 thisD = sum((obj.pos - target) .* (obj.pos - target));
                 if thisD < 31.25
                     obj.completed = 1;
@@ -98,38 +101,43 @@ classdef Rocket < handle
                 
                 % bouncy in x
                 if obj.pos(1) <= -worldWidth || obj.pos(1) >= worldWidth
-                    obj.vel = obj.vel .* [-1, 1];
+                    % obj.vel = obj.vel .* [-1, 1];
+                    obj.vel(1) = 0;
+                    obj.acc(1) = 0;
                 end
                 
                 if (obj.pos(2) >= obj.p2(2) && obj.pos(2) <= obj.p1(2) && obj.pos(1) <= obj.p1(1))
                     if obj.lastPos(1) > obj.p1(1)
-                        obj.vel = obj.vel .* [-1, 1];
+                        % obj.vel = obj.vel .* [-1, 1];
+                        obj.vel(1) = 0;
+                        obj.acc(1) = 0;
                     end
                 end
                 
                 if (obj.pos(2) >= obj.p4(2) && obj.pos(2) <= obj.p3(2) && obj.pos(1) >= obj.p3(1))
                     if obj.lastPos(1) < obj.p4(1)
-                        obj.vel = obj.vel .* [-1, 1];
+%                         obj.vel = obj.vel .* [-1, 1];
+                        obj.vel(1) = 0;
+                        obj.acc(1) = 0;
                     end
                 end
                 
                 % bouncy in y
                 if obj.pos(2) <= 0 || obj.pos(2) >= worldHeight
-                    obj.vel = obj.vel .* [1, -1];
+                    % obj.vel = obj.vel .* [1, -1];
+                    obj.vel(2) = 0;
+                    obj.acc(2) = 0;
                 end
                 
                 if (obj.pos(1) >= obj.p4(1) && (obj.pos(2) >= obj.p4(2) && obj.pos(2) <= obj.p3(2))) || (obj.pos(1) <= obj.p1(1) && (obj.pos(2) <= obj.p1(2) && obj.pos(2) >= obj.p2(2)))
                     if obj.lastPos(2) < obj.p4(2) || obj.lastPos(2) > obj.p3(2) || obj.lastPos(2) < obj.p2(2) || obj.lastPos > obj.p1(2)
-                        obj.vel = obj.vel .* [1, -1];
+                        % obj.vel = obj.vel .* [1, -1];
+                        obj.vel(2) = 0;
+                        obj.acc(2) = 0;
                     end
                 end
                 
-                
-                obj.applyForce(obj.dna.genes{obj.count});
-                obj.count = obj.count + 1;
-                
                 obj.vel = obj.vel + obj.acc;
-                
                 % limit velocity
                 if sqrt(sum(obj.vel .* obj.vel)) > 4
                     obj.vel = 4 * obj.vel / sqrt(sum(obj.vel .* obj.vel));
@@ -179,46 +187,46 @@ classdef Rocket < handle
                 global target
                 d = obj.pos - target;
                 obj.fitness = Rocket.map(sqrt(sum(d .* d)), 0, 500, 10, 0);
-            
-%                 global rx1; global rw1; global ry1; global rh1
-%                 global rx2; global rw2; global ry2; global rh2
-%                 % d = sqrt(sum((obj.pos - target) .* (obj.pos - target)));
-%                 if obj.pos(2) < ry1 - rh1
-%                     d = sqrt(sum((obj.pos - obj.p4) .* (obj.pos - obj.p4)));
-%                     d = d + obj.dt4;
-%                 obj.fitness = Rocket.map(d, 0, 0.75 * (obj.dt4 + sqrt(sum(obj.p4 .* obj.p4))), 1, 0);
-%                 elseif obj.pos(2) < ry1 + rh1
-%                     d = sqrt(sum((obj.pos - obj.p3) .* (obj.pos - obj.p3)));
-%                     d = d + obj.dt3;
-%                     if obj.pos(1) < rx1 - rw1
-%                         d = min([d, obj.dt2 + sqrt(sum((obj.pos - obj.p2) .* (obj.pos - obj.p2)))]);
-%                     end
-%                 obj.fitness = Rocket.map(d, 0, 0.75 * (obj.dt4 + sqrt(sum(obj.p4 .* obj.p4))), 1, 0);
-%                 elseif obj.pos(2) < ry2 - rh2
-%                     d = sqrt(sum((obj.pos - obj.p2) .* (obj.pos - obj.p2)));
-%                     d = d + obj.dt2;
-%                 obj.fitness = Rocket.map(d, 0, 0.75 * (obj.dt4 + sqrt(sum(obj.p4 .* obj.p4))), 1, 0);
-%                 elseif obj.pos(2) < ry2 + rh2
-%                     d = sqrt(sum((obj.pos - obj.p1) .* (obj.pos - obj.p1)));
-%                     d = d + obj.dt1;
-%                     if obj.pos(1) > rx2 + rw2
-%                         d = min([d, sqrt(sum((obj.pos - target) .* (obj.pos - target)))]);
-%                     end
-%                 obj.fitness = Rocket.map(d, 0, 0.75 * (obj.dt4 + sqrt(sum(obj.p4 .* obj.p4))), 1, 0);
-%                 else
-%                     d = sqrt(sum((obj.closestPos - target) .* (obj.closestPos - target)));
-%                     if d < 25
-%                         obj.fitness = Rocket.map(obj.closestIdx, 0, lifeCount, 7, 1);
-%                     else
-%                         obj.fitness = Rocket.map(d, 0, obj.dt1, 7, 5);
-%                     end
-%                 end
-%                 
-% %                 obj.fitness = Rocket.map(d, 0, 0.75 * (obj.dt1 + obj.d12 + obj.d23 + obj.d34 + sqrt(sum(obj.p4 .* obj.p4))), 1, 0);
-%                 
-%                 if obj.fitness < 0
-%                     obj.fitness = 0;
-%                 end
+                
+                %                 global rx1; global rw1; global ry1; global rh1
+                %                 global rx2; global rw2; global ry2; global rh2
+                %                 % d = sqrt(sum((obj.pos - target) .* (obj.pos - target)));
+                %                 if obj.pos(2) < ry1 - rh1
+                %                     d = sqrt(sum((obj.pos - obj.p4) .* (obj.pos - obj.p4)));
+                %                     d = d + obj.dt4;
+                %                 obj.fitness = Rocket.map(d, 0, 0.75 * (obj.dt4 + sqrt(sum(obj.p4 .* obj.p4))), 1, 0);
+                %                 elseif obj.pos(2) < ry1 + rh1
+                %                     d = sqrt(sum((obj.pos - obj.p3) .* (obj.pos - obj.p3)));
+                %                     d = d + obj.dt3;
+                %                     if obj.pos(1) < rx1 - rw1
+                %                         d = min([d, obj.dt2 + sqrt(sum((obj.pos - obj.p2) .* (obj.pos - obj.p2)))]);
+                %                     end
+                %                 obj.fitness = Rocket.map(d, 0, 0.75 * (obj.dt4 + sqrt(sum(obj.p4 .* obj.p4))), 1, 0);
+                %                 elseif obj.pos(2) < ry2 - rh2
+                %                     d = sqrt(sum((obj.pos - obj.p2) .* (obj.pos - obj.p2)));
+                %                     d = d + obj.dt2;
+                %                 obj.fitness = Rocket.map(d, 0, 0.75 * (obj.dt4 + sqrt(sum(obj.p4 .* obj.p4))), 1, 0);
+                %                 elseif obj.pos(2) < ry2 + rh2
+                %                     d = sqrt(sum((obj.pos - obj.p1) .* (obj.pos - obj.p1)));
+                %                     d = d + obj.dt1;
+                %                     if obj.pos(1) > rx2 + rw2
+                %                         d = min([d, sqrt(sum((obj.pos - target) .* (obj.pos - target)))]);
+                %                     end
+                %                 obj.fitness = Rocket.map(d, 0, 0.75 * (obj.dt4 + sqrt(sum(obj.p4 .* obj.p4))), 1, 0);
+                %                 else
+                %                     d = sqrt(sum((obj.closestPos - target) .* (obj.closestPos - target)));
+                %                     if d < 25
+                %                         obj.fitness = Rocket.map(obj.closestIdx, 0, lifeCount, 7, 1);
+                %                     else
+                %                         obj.fitness = Rocket.map(d, 0, obj.dt1, 7, 5);
+                %                     end
+                %                 end
+                %
+                % %                 obj.fitness = Rocket.map(d, 0, 0.75 * (obj.dt1 + obj.d12 + obj.d23 + obj.d34 + sqrt(sum(obj.p4 .* obj.p4))), 1, 0);
+                %
+                %                 if obj.fitness < 0
+                %                     obj.fitness = 0;
+                %                 end
             end
             fit = obj.fitness;
         end
@@ -240,7 +248,7 @@ classdef Rocket < handle
         end
         
         function showFitnessField(width, height)
-           
+            
             step = 4;
             iArr = -width:step:width;
             jArr = 1:step:height;
@@ -253,7 +261,7 @@ classdef Rocket < handle
                     thisRocket.closestPos = [iArr(i), j];
                     fitArr(j, i) = thisRocket.calcFitness;
                     thisRocket.kill;
-
+                    
                 end
             end
             
@@ -272,7 +280,7 @@ classdef Rocket < handle
             
             
         end
-            
+        
     end
     
 end
